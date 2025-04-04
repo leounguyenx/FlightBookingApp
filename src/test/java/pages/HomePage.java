@@ -1,5 +1,6 @@
 package pages;
 
+import managers.WaitManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,16 +9,19 @@ import org.openqa.selenium.support.ui.Select;
 
 public class HomePage {
     WebDriver driver;
+    WaitManager wm;
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
+        wm = new WaitManager(driver);
         PageFactory.initElements(driver, this);
     }
+
 
     @FindBy(xpath = "//*[@id=\"fadein\"]/main/div[1]/div[2]/div[1]/h4/strong")
     WebElement txt_banner;
 
-    /*FLIGHT SEARCH*/
+    /** SEARCHING FLIGHT **/
     @FindBy(xpath = "//input[@name='from']" )
     WebElement txt_origin;
     @FindBy(xpath = "//input[@name='to']")
@@ -50,14 +54,15 @@ public class HomePage {
     @FindBy(id = "flights-search")
     WebElement btn_Search_btn;
 
-    //Verify homepage banner text
+    // Verify HomePage Banner
     public String getBannerText(){
         return txt_banner.getText();
     }
 
     //Select the flight tab
     public void selectFlightTab(){
-        tab_flight.click();
+        //tab_flight.click();
+        wm.waitTillClickable(tab_flight).click();
     }
 
     //Select the Travel Type: One Way or Return
@@ -101,7 +106,8 @@ public class HomePage {
 
     //Select number of passengers
     public void clickOnTravellersDropdown(){
-        drd_travellers.click();
+        //drd_travellers.click();
+        wm.waitTillClickable(drd_travellers).click();
     }
     public void enterAdults(String numberOfAdults){
         //Need to optimize that only accept integer
@@ -120,6 +126,7 @@ public class HomePage {
     }
     public void enterTravellers(String numberOfAdults, String numberOfChildren, String numberOfInfants){
         drd_travellers.click();
+        wm.waitTillClickable(drd_travellers).click();
         txt_numOfAdults.clear();
         txt_numOfAdults.sendKeys(numberOfAdults);
         txt_numOfChildren.clear();
@@ -129,7 +136,8 @@ public class HomePage {
     }
 
     public void clickSearchButton(){
-        btn_Search_btn.click();
+//        btn_Search_btn.click();
+        wm.waitTillClickable(btn_Search_btn).click();
     }
     public boolean verifyModifySearchButtonDisplay(){
         //System.out.println(txt_getFlightResultText.getText());
