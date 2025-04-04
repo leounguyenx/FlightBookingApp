@@ -18,11 +18,15 @@ public class BaseClass {
     }
     public static WebDriver headlessInit() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
+
+        options.addArguments("--headless=new"); // modern headless mode
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("window-size=1920,1080");
+
         driver = new ChromeDriver(options);
         driver.manage().deleteAllCookies();
         driver.get(url);
         return driver;
-
     }
 }
