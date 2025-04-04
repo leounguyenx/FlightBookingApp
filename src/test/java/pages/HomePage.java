@@ -14,6 +14,9 @@ public class HomePage {
         PageFactory.initElements(driver, this);
     }
 
+    @FindBy(xpath = "//*[@id=\"fadein\"]/main/div[1]/div[2]/div[1]/h4/strong")
+    WebElement txt_banner;
+
     /*FLIGHT SEARCH*/
     @FindBy(xpath = "//input[@name='from']" )
     WebElement txt_origin;
@@ -46,6 +49,11 @@ public class HomePage {
     WebElement tab_flight;
     @FindBy(id = "flights-search")
     WebElement btn_Search_btn;
+
+    //Verify homepage banner text
+    public String getBannerText(){
+        return txt_banner.getText();
+    }
 
     //Select the flight tab
     public void selectFlightTab(){

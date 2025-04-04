@@ -1,5 +1,6 @@
 package tests;
 
+import base.BaseClass;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -18,14 +19,19 @@ public class SearchFlightsTest {
 
     @Given("User on the flight Search Page")
     public void user_on_the_flight_search_page() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-        driver.get("https://www.phptravels.net/");
+
+        //driver = BaseClass.init();
+
+        // Use headless
+        driver = BaseClass.headlessInit();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        homepage = new HomePage(driver);
+
+        Assert.assertEquals(homepage.getBannerText(), "Your Trip Starts Here!");
     }
+
     @When("User searches a flight from {string} to {string}")
     public void user_searches_a_flight_from_to(String from, String to) {
-        homepage = new HomePage(driver);
         homepage.enterOrigin(from);
         homepage.enterDestination(to);
     }
