@@ -18,15 +18,17 @@ public class TestReportScreenshots {
 
         // Generate timestamp for uniqueness
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String testStepName = "test_report_";
 
-        // Define the screenshot name
-        String screenshotName = testStepName + timestamp + ".png";
+        // Define screenshot type
+        String screenshotType = "test_report_";
+
+        // Define screenshot name
+        String screenshotName = screenshotType + timestamp + ".png";
 
         try {
-            // Path to local HTML file
-            //Ensure the file is existed
+            // Path to local HTML file and ensure the file is existed
             File file = new File("target/report/html-report.html");
+
             //Convert local path to URL format with absolute path
             String reportPath = "file:///" + file.getAbsolutePath();
             driver.get(reportPath);
@@ -35,18 +37,15 @@ public class TestReportScreenshots {
             // Take a screenshot
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             System.out.println("Took screenshot!");
+
+            // Save screenshot to local folder
             File destinationFile = new File("./src/test/screenshots/" + screenshotName);
             FileHandler.copy(screenshot, destinationFile);
             System.out.println("Saved a sreenshot: " + screenshotName + " to screenshot folder");
 
-            //String screenshotPath = "test-report.png";
-            //File destination = new File(screenshotPath);
-            //screenshot.renameTo(destination);
-
-            // Upload to AWS S3
-            //uploadToS3(destination);
-
-            System.out.println("Screenshot captured and uploaded successfully!");
+            // Upload screenshot of test report to AWS S3
+            S3Uploader.uploadFileToS3(screenshot, "screenshots/test-reports/test-report_" + System.currentTimeMillis() + ".png");
+            System.out.println("Screenshot captured and uploaded to S3 successfully!");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,5 +53,6 @@ public class TestReportScreenshots {
             driver.quit();
         }
     }
+
 
 }
